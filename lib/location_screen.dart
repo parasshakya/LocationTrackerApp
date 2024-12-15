@@ -29,10 +29,6 @@ class _LocationScreenState extends State<LocationScreen> {
       print("EXCEPTION WHILE STARTING BACKGROUND SERVICE: $e");
 
       stopBackgroundService();
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-            content: Text("Something went wrong. Please try again later")));
-      }
     }
   }
 
@@ -77,14 +73,10 @@ class _LocationScreenState extends State<LocationScreen> {
 
     // Request "Allow all the time" location permission if the user has set the location permission to "While in use"
     if (permission != LocationPermission.always) {
-      final newPermission = await Geolocator.requestPermission();
+      await _showPermissionDialog();
 
-      if (newPermission != LocationPermission.always) {
-        await _showPermissionDialog();
-
-        throw Exception(
-            "Location permission should be set to 'Allow all the time' to access location when app is in background or closed");
-      }
+      throw Exception(
+          "Location permission should be set to 'Allow all the time' to access location when app is in background or closed");
     }
   }
 
@@ -95,7 +87,7 @@ class _LocationScreenState extends State<LocationScreen> {
         return AlertDialog(
           title: const Text("Permission Required"),
           content: Text(message ??
-              "Background location permission is required. Please enable 'allow all the time' location permission in app settings."),
+              "Background location permission is also required. Please enable 'Allow all the time' location permission in app settings."),
           actions: [
             TextButton(
               onPressed: () {
