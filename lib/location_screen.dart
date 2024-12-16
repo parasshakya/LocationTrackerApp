@@ -55,28 +55,15 @@ class _LocationScreenState extends State<LocationScreen> {
       throw Exception("Location service not enabled");
     }
 
-    // Check and request location permissions
+    // Check location permission
     LocationPermission permission = await Geolocator.checkPermission();
-    if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
-      if (permission == LocationPermission.denied) {
-        await _showPermissionDialog();
-        throw Exception("Permission is denied");
-      }
-    }
 
-    if (permission == LocationPermission.deniedForever) {
-      await _showPermissionDialog();
-
-      throw Exception("Permission is denied forever");
-    }
-
-    // Request "Allow all the time" location permission if the user has set the location permission to "While in use"
+    // Request "Allow all the time" location permission
     if (permission != LocationPermission.always) {
       await _showPermissionDialog();
 
       throw Exception(
-          "Location permission should be set to 'Allow all the time' to access location when app is in background or closed");
+          "Location permission should be set to 'Allow all the time' to access location even when the app is in background or closed");
     }
   }
 
