@@ -41,20 +41,8 @@ class MainApp extends StatelessWidget {
 
 @pragma('vm:entry-point')
 void onStart(ServiceInstance service) async {
-  // Initialize Completer
-  Completer<void> storageCompleter = Completer<void>();
-
   service.on("stopService").listen((event) async {
-    // Wait for storage operation to complete if not already done
-    if (!storageCompleter.isCompleted) {
-      try {
-        await storageCompleter.future; // Wait for completer to complete
-      } catch (e) {
-        print("Error while waiting for storage operation: $e");
-      }
-    }
-
-    service.stopSelf(); //Stop the service after storage operation
+    service.stopSelf(); //Stop the service
   });
 
   Timer.periodic(const Duration(seconds: 5), (timer) async {
@@ -91,16 +79,8 @@ void onStart(ServiceInstance service) async {
       updates.add(locationData);
 
       await prefs.setString('locationUpdates', jsonEncode(updates));
-
-      // Complete the Completer after storage operation
-      if (!storageCompleter.isCompleted) {
-        storageCompleter.complete();
-      }
     } catch (e) {
       print("Error while fetching or storing location: $e");
-      if (!storageCompleter.isCompleted) {
-        storageCompleter.completeError(e);
-      }
     }
   });
 }
