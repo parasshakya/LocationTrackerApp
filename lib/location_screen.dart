@@ -206,7 +206,7 @@ class _LocationScreenState extends State<LocationScreen> {
                 backgroundColor: Colors.red,
               ),
               child: const Text(
-                "Delete Data",
+                "Clear Data",
                 style: TextStyle(color: Colors.white),
               ),
             ),
