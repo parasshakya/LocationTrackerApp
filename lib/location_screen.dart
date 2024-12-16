@@ -87,7 +87,7 @@ class _LocationScreenState extends State<LocationScreen> {
         return AlertDialog(
           title: const Text("Permission Required"),
           content: Text(message ??
-              "Background location permission is also required. Please enable 'Allow all the time' location permission in app settings."),
+              "Please enable 'Allow all the time' location permission in the app settings to allow location tracking in the background or when the app is closed."),
           actions: [
             TextButton(
               onPressed: () {
