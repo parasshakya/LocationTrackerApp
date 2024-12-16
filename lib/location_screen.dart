@@ -137,7 +137,9 @@ class _LocationScreenState extends State<LocationScreen> {
       });
 
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Location updates deleted successfully")),
+        const SnackBar(
+            content: Text(
+                "All saved location updates have been successfully removed.")),
       );
     } catch (e) {
       print("Error while deleting location updates: $e");
