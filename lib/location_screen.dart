@@ -166,53 +166,56 @@ class _LocationScreenState extends State<LocationScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Column(
-          children: [
-            Expanded(
-              child: isLoading
-                  ? Center(
-                      child: CircularProgressIndicator(),
-                    )
-                  : ListView.builder(
-                      itemCount: locationUpdates.length,
-                      itemBuilder: (context, index) {
-                        final update = locationUpdates[index];
-                        return ListTile(
-                          title: Text(
-                              "Lat: ${update['latitude']}, Lng: ${update['longitude']}"),
-                          subtitle: Text("Time: ${update['timestamp']}"),
-                        );
+    return SafeArea(
+      child: Scaffold(
+        body: Center(
+          child: Column(
+            children: [
+              Container(
+                height: 500,
+                child: isLoading
+                    ? Center(
+                        child: CircularProgressIndicator(),
+                      )
+                    : ListView.builder(
+                        itemCount: locationUpdates.length,
+                        itemBuilder: (context, index) {
+                          final update = locationUpdates[index];
+                          return ListTile(
+                            title: Text(
+                                "Lat: ${update['latitude']}, Lng: ${update['longitude']}"),
+                            subtitle: Text("Time: ${update['timestamp']}"),
+                          );
+                        },
+                      ),
+              ),
+              Divider(),
+              ElevatedButton(
+                onPressed: isRunning == null
+                    ? null // Prevent pressing if state is loading
+                    : () {
+                        if (isRunning!) {
+                          stopBackgroundService();
+                        } else {
+                          startBackgroundService();
+                        }
                       },
-                    ),
-            ),
-            Divider(),
-            ElevatedButton(
-              onPressed: isRunning == null
-                  ? null // Prevent pressing if state is loading
-                  : () {
-                      if (isRunning!) {
-                        stopBackgroundService();
-                      } else {
-                        startBackgroundService();
-                      }
-                    },
-              child: isRunning != null
-                  ? Text(isRunning! ? "Stop Tracking" : "Start Tracking")
-                  : const CircularProgressIndicator(),
-            ),
-            ElevatedButton(
-              onPressed: _deleteLocationUpdates,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.red,
+                child: isRunning != null
+                    ? Text(isRunning! ? "Stop Tracking" : "Start Tracking")
+                    : const CircularProgressIndicator(),
               ),
-              child: const Text(
-                "Clear Data",
-                style: TextStyle(color: Colors.white),
+              ElevatedButton(
+                onPressed: _deleteLocationUpdates,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.red,
+                ),
+                child: const Text(
+                  "Clear Data",
+                  style: TextStyle(color: Colors.white),
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

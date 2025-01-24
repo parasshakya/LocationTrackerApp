@@ -1,4 +1,4 @@
-package com.example.location_app
+package com.parasshakya.location
 
 import io.flutter.embedding.android.FlutterActivity
 

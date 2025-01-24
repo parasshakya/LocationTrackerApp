@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_background_service/flutter_background_service.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:go_router/go_router.dart';
 import 'package:location_app/helper.dart';
 import 'package:location_app/location_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -33,8 +34,13 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: LocationScreen(),
+    return MaterialApp.router(
+      routerConfig: GoRouter(routes: [
+        GoRoute(
+          path: '/',
+          builder: (context, state) => const LocationScreen(),
+        )
+      ]),
     );
   }
 }
@@ -45,7 +51,9 @@ void onStart(ServiceInstance service) async {
     service.stopSelf(); //Stop the service
   });
 
-  Timer.periodic(const Duration(seconds: 5), (timer) async {
+  final prefs = await SharedPreferences.getInstance();
+
+  Timer.periodic(const Duration(seconds: 8), (timer) async {
     try {
       Position position = await Geolocator.getCurrentPosition(
           desiredAccuracy: LocationAccuracy.medium);
@@ -70,7 +78,6 @@ void onStart(ServiceInstance service) async {
         }
       }
       // Save location to SharedPreferences
-      final prefs = await SharedPreferences.getInstance();
       final storedUpdates = prefs.getString('locationUpdates');
       List<Map<String, dynamic>> updates = [];
       if (storedUpdates != null) {

@@ -1,0 +1,9 @@
+[{
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.parasshakya.location",
+      "sha256_cert_fingerprints":
+["6E:93:BD:6E:9C:05:CB:06:2A:EF:1F:0B:E4:42:8A:AA:90:E7:1B:D0:83:BB:28:04:BF:8F:5D:F5:D2:3B:FE:0E"]    }
+  }]
+  
